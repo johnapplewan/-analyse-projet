@@ -1,0 +1,11 @@
+
+!sessions/*example*/
+!sessions/.gitkeep
+# /newroaster's raw sources (transcripts, essays, notes) stay on your machine; only the brain ships
+# your councils stay on your machine; the examples ship with the repo
+.DS_Store
+.env
+build/
+dist/
+node_modules/
+sessions/*

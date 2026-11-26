@@ -50,7 +50,6 @@ export async function downloadVerdictPdf({ setup, verdict: ev, byKey, id }) {
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF({ unit: "pt", format: "letter", compress: true });
   await addFonts(doc);
-  const logo = "data:image/png;base64," + (await fetchBase64("/brand/ais-horizontal-on-light.png"));
 
   const v = ev.verdict;
   const seats = ev.seats || [];
@@ -114,7 +113,6 @@ export async function downloadVerdictPdf({ setup, verdict: ev, byKey, id }) {
   };
 
   // ---------------------------------------------------------------- header
-  doc.addImage(logo, "PNG", M, y, 62, 62 * 374 / 900, "ais-logo", "SLOW");
   font(15, "bold", C.ink); doc.text("Roast Room", W - M, y + 12, { align: "right" });
   font(8.5, "normal", C.mute); doc.text(`Verdict report · ${dateLine(id)}`, W - M, y + 25, { align: "right" });
   y += 40;
@@ -218,7 +216,7 @@ export async function downloadVerdictPdf({ setup, verdict: ev, byKey, id }) {
     doc.setPage(p);
     doc.setDrawColor(...C.rule); doc.setLineWidth(0.75); doc.line(M, H - 46, W - M, H - 46);
     font(7.5, "semibold", C.mute);
-    const tag = `Roast Room by AI Automation Society · ${p} of ${pages}`;
+    const tag = `Roast Room · ${p} of ${pages}`;
     const tagW = doc.getTextWidth(tag);
     doc.text(tag, W - M, H - 34, { align: "right" });
     font(7.5, "normal", C.mute);

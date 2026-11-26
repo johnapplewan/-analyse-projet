@@ -511,7 +511,7 @@ function captionFor(who) {
   c.style.animation = "none"; void c.offsetWidth; c.style.animation = "";
   const s = state.byKey[who];
   $("#capAv").className = `cap-av${s ? "" : " chair"}`;
-  $("#capAv").innerHTML = `<img src="${s ? portrait(who) : "/brand/ais-symbol.png"}" alt="">`;
+  $("#capAv").innerHTML = `${s ? `<img src="${portrait(who)}" alt="">` : "<b>RR</b>"}`;
   $("#capWho").textContent = s ? s.name : "The Chair";
 }
 

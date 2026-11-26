@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Roast Room · fais analyser ton projet</title>
+  <meta name="description" content="Colle ton projet. Un conseil de conseillers simulés l'analyse devant toi.">
+  <link rel="icon" href="room/brand/favicon-ais.png" type="image/png">
+  <link rel="stylesheet" href="landing.css">
+</head>
+<body>
+  <div class="bg" aria-hidden="true"></div>
+
+  <!-- Écran 1 : coller son projet -->
+  <main class="screen hero" id="hero">
+    <p class="kicker">Roast Room</p>
+    <h1>Fais analyser ton projet<br>par un conseil d'experts.</h1>
+    <p class="lead">Colle l'adresse de ton repo, une URL, ou décris ton projet en quelques lignes. Le conseil s'installe autour de la table.</p>
+    <form id="form" class="paste">
+      <label for="project" class="sr">Ton projet</label>
+      <textarea id="project" rows="4" maxlength="4000" placeholder="github.com/toi/mon-projet&#10;ou https://mon-site.fr&#10;ou : « Une app qui aide les artisans à… »" required></textarea>
+      <button type="submit" class="cta">Entrer dans la room <span aria-hidden="true">→</span></button>
+    </form>
+    <ul class="faces" id="faces" aria-hidden="true"></ul>
+    <p class="fine">Les conseillers sont des simulations construites à partir de travaux publics. Ce ne sont pas les vraies personnes.</p>
+  </main>
+
+  <!-- Animation d'entrée : la lumière s'ouvre sur la room -->
+  <section class="screen room" id="room" aria-hidden="true">
+    <div class="spot"></div>
+    <div class="stage" id="stage">
+      <div class="table"><span>Roast Room</span></div>
+    </div>
+
+    <!-- Écran 2 : code d'accès -->
+    <div class="card gate" id="gate" hidden>
+      <h2>Code d'accès</h2>
+      <p>Entre le code pour lancer l'analyse de ton projet.</p>
+      <form id="codeForm">
+        <label for="code" class="sr">Code d'accès</label>
+        <input id="code" type="password" autocomplete="off" placeholder="••••••••" required>
+        <button type="submit" class="cta">Entrer</button>
+      </form>
+      <p class="err" id="err" role="alert" hidden></p>
+      <div class="sep"><span>ou</span></div>
+      <a class="demo" id="demoBtn" href="#">Voir la démo</a>
+      <button type="button" class="back" id="back">← Modifier mon projet</button>
+    </div>
+
+    <!-- Écran 3 : demande prête -->
+    <div class="card ready" id="ready" hidden>
+      <h2>Ton projet est prêt pour la room</h2>
+      <blockquote id="summary"></blockquote>
+      <p>L'analyse en direct tourne dans Claude Code, sur le compte du propriétaire, sans clé API. Voilà la commande à lancer :</p>
+      <pre><code id="cmd"></code></pre>
+      <div class="row">
+        <button type="button" class="cta" id="copy">Copier la commande</button>
+        <a class="ghost" id="issue" target="_blank" rel="noopener noreferrer">Envoyer la demande (issue GitHub)</a>
+      </div>
+      <a class="demo small" id="demo2" href="#">Voir la démo en attendant</a>
+    </div>
+  </section>
+
+  <script src="config.js"></script>
+  <script src="landing.js"></script>
+</body>
+</html>

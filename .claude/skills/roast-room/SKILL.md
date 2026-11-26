@@ -10,6 +10,10 @@ The Roast Room: runs a board meeting on one decision. A board of seats (seven ou
 
 Read once before the first run: `roster.json` (every seat and the default board), `references/seats.md` (picking the board, weights, tensions), `references/round-prompts.md` (what each seat gets), `references/scoring.md` (math and overrides), `references/report-template.md` (output), `references/live-room.md` (the small JSON files the visual room plays). A finished example council lives in `sessions/2026-10-09-example-take-the-seed/`.
 
+## Language
+
+Default to the user's language (French for this project; see CLAUDE.md). Write every free-text part in it, and pass this instruction to each seat's prompt. Keep the machine-read tokens in English exactly as specified: field names, stance words, vote words, and verdict labels. The room translates them on screen.
+
 ## Modes
 
 - **Full council** (default): a board recommended for this decision and confirmed by the user (see "Pick the board"), three rounds. For decisions that are expensive or hard to undo.

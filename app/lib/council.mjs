@@ -17,7 +17,7 @@ const chairSystem = (st) => {
 You never argue a side and never add your own pillar. You run the room, keep score, and write in plain English: short sentences, no em dashes, no hype, no tee-ups like "here's the thing", no filler. Seat keys (for key fields only): ${seats.map((x) => x.key).join(", ")}. Whenever you write a seat's name in prose or in a seat field, use its display name: ${seats.map((x) => x.short).join(", ")}.`;
 };
 
-export const DISCLAIMER = "Simulated advisors built from each person's public work. They are not the people and do not speak for them.";
+export const DISCLAIMER = "Conseillers simulés construits à partir du travail public de chaque personne. Ce ne sont pas les vraies personnes et ils ne parlent pas pour elles.";
 
 // ---------------------------------------------------------------- sessions
 const sessions = new Map();

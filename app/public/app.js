@@ -11,47 +11,47 @@ const SAMPLES = [
   ["Quit my job?", "I make $180k a year at a tech company. My side business (a paid newsletter) makes $6k a month and grew 8% a month this year. I have 9 months of expenses saved. Should I quit now, quit in 6 months, or keep both and hire a writer?"],
 ];
 
-const EXAMPLE = "I run a coaching business at $30k a month with 15 clients at $2,000 each. Should I raise to $3,500 for everyone, raise for new clients only, or keep $2,000? Close rate is about 50% and I have $40k in the bank. Success is $45k a month by March. I'm leaning toward raising for everyone because I'm underpaid.";
+const EXAMPLE = "Je gère une activité de coaching à 30 k€ par mois avec 15 clients à 2 000 € chacun. Dois-je passer à 3 500 € pour tout le monde, seulement pour les nouveaux clients, ou garder 2 000 € ? Mon taux de closing est d'environ 50 % et j'ai 40 k€ de trésorerie. Le succès, c'est 45 k€ par mois d'ici mars. Je penche pour augmenter tout le monde parce que je suis sous-payé.";
 
 // The how-to, shown in the side panel while the room is empty and in "How it works".
 const GUIDE = `
   <div class="guide">
     <div class="guide-sec">
-      <h4>How to use the Roast Room</h4>
+      <h4>Comment utiliser la Roast Room</h4>
       <ol>
-        <li><span>Open Claude Code in this folder.</span></li>
-        <li><span>Type <code>/roast-room</code> and your decision.</span></li>
-        <li><span>Pick your advisors (the Chair recommends a board) and answer its questions. Then watch the council argue it out here.</span></li>
-        <li><span>When the verdict lands, download it as a PDF.</span></li>
+        <li><span>Ouvre Claude Code dans ce dossier.</span></li>
+        <li><span>Tape <code>/roast-room</code> suivi de ta décision.</span></li>
+        <li><span>Choisis tes conseillers (le Président en recommande) et réponds à ses questions. Regarde ensuite le conseil débattre ici.</span></li>
+        <li><span>Quand le verdict tombe, télécharge-le en PDF.</span></li>
       </ol>
     </div>
     <div class="guide-sec">
-      <h4>What to put in your question</h4>
+      <h4>Quoi mettre dans ta question</h4>
       <ul>
-        <li><span><b>The decision</b> in one line.</span></li>
-        <li><span><b>Your options.</b> Two or three. "Keep doing what I do now" counts.</span></li>
-        <li><span><b>Your numbers.</b> Revenue, cash, and team size.</span></li>
-        <li><span><b>Your limits.</b> Deadline, hours, and budget.</span></li>
-        <li><span><b>What success looks like</b>, and by when.</span></li>
-        <li><span><b>Which way you're leaning</b>, and why. The council tests it.</span></li>
+        <li><span><b>La décision</b> en une ligne.</span></li>
+        <li><span><b>Tes options.</b> Deux ou trois. « Continuer comme avant » compte.</span></li>
+        <li><span><b>Tes chiffres.</b> Revenu, trésorerie et taille de l'équipe.</span></li>
+        <li><span><b>Tes limites.</b> Délai, heures et budget.</span></li>
+        <li><span><b>À quoi ressemble le succès</b>, et pour quand.</span></li>
+        <li><span><b>Ton penchant</b>, et pourquoi. Le conseil le met à l'épreuve.</span></li>
       </ul>
-      <p class="note" style="margin-top:8px">Left something out? The Chair asks before the council starts.</p>
+      <p class="note" style="margin-top:8px">Un oubli ? Le Président te pose la question avant le début du conseil.</p>
     </div>
     <div class="guide-sec">
-      <h4>Example</h4>
+      <h4>Exemple</h4>
       <div class="example">
         <p><code>/roast-room</code> ${EXAMPLE.replace(/&/g, "&amp;").replace(/</g, "&lt;")}</p>
-        <button class="ghost" type="button" data-copy-example>Copy this example</button>
+        <button class="ghost" type="button" data-copy-example>Copier cet exemple</button>
       </div>
     </div>
     <div class="guide-sec">
-      <h4>Good to know</h4>
+      <h4>Bon à savoir</h4>
       <ul>
-        <li><span><b>Pick your council:</b> the Chair recommends the advisors that fit your question and asks you to confirm. Add or drop anyone.</span></li>
-        <li><span><b>Full council:</b> 5 to 7 advisors, 3 rounds. For big calls that are hard to undo.</span></li>
-        <li><span><b>Quick:</b> add <code>--quick</code> for 4 advisors and 2 rounds. Uses far less of your plan.</span></li>
-        <li><span><b>Every council is saved.</b> Open Past sessions to replay one or download its PDF.</span></li>
-        <li><span><b>Add an advisor:</b> type <code>/newroaster</code> and a name. Change your default board with <code>/roast-room board</code>.</span></li>
+        <li><span><b>Compose ton conseil :</b> le Président recommande les conseillers adaptés à ta question et te demande de confirmer. Ajoute ou retire qui tu veux.</span></li>
+        <li><span><b>Conseil complet :</b> 5 à 7 conseillers, 3 rounds. Pour les grandes décisions difficiles à défaire.</span></li>
+        <li><span><b>Rapide :</b> ajoute <code>--quick</code> pour 4 conseillers et 2 rounds. Consomme bien moins de ton abonnement.</span></li>
+        <li><span><b>Chaque conseil est sauvegardé.</b> Ouvre « Sessions passées » pour en rejouer un ou télécharger son PDF.</span></li>
+        <li><span><b>Ajouter un conseiller :</b> tape <code>/newroaster</code> et un nom. Change ton conseil par défaut avec <code>/roast-room board</code>.</span></li>
       </ul>
     </div>
   </div>`;
@@ -90,7 +90,11 @@ function drawnBust(key, shape) {
   bustCache.set(id, url);
   return url;
 }
-const ROUND_NAME = ["", "Opening", "Debate", "Vote"];
+const ROUND_NAME = ["", "Ouverture", "Débat", "Vote"];
+const VOTE_FR = { endorse: "approuve", amend: "amende", dissent: "s'oppose" };
+const LABEL_FR = { "GO": "GO", "GO WITH CONDITIONS": "GO SOUS CONDITIONS", "RESHAPE": "À REVOIR", "WAIT": "ATTENDRE", "DON'T DO IT": "NE LE FAIS PAS" };
+const lbl = (x) => LABEL_FR[x] || x;
+const PHASE_FR = { setup: "Le Président lit ta question", round1: "Round 1 : positions d'ouverture", cruxes: "Le Président cherche les lignes de fracture", round2: "Round 2 : le débat", draft: "Le Président prépare une résolution", round3: "Round 3 : le vote", skip3: "Mode rapide : le round de vote est passé", verdict: "Le Président rédige le verdict" };
 
 const state = {
   seats: [], byKey: {}, board: [], table: [], session: null, options: [], weights: {}, active: [], round: 0,
@@ -101,7 +105,7 @@ const state = {
 async function boot() {
   const r = await refreshSeats();
   state.runner = r.runner;
-  if (r.runner === "api" && !r.hasKey) toast("No ANTHROPIC_API_KEY found in .env. Add it and restart the server.");
+  if (r.runner === "api" && !r.hasKey) toast("Aucune ANTHROPIC_API_KEY dans .env. Ajoute-la et redémarre le serveur.");
   renderSeats(state.board);
   renderSamples();
   bindUI();
@@ -171,7 +175,7 @@ function renderSeats(keys) {
   state.table = want;
   const seats = want.map((k) => state.byKey[k]);
   $("#seats").innerHTML = seats.map((s, i) => `
-    <div class="seat" id="seat-${s.key}" data-seat="${s.key}" style="--d:-${(i * 1.7) % 6}s" tabindex="0" role="button" aria-label="${esc(s.name)}, ${esc(s.pillar)}. Open card.">
+    <div class="seat" id="seat-${s.key}" data-seat="${s.key}" style="--d:-${(i * 1.7) % 6}s" tabindex="0" role="button" aria-label="${esc(s.name)}, ${esc(s.pillar)}. Ouvrir la fiche.">
       <div class="think" aria-hidden="true"><i></i><i></i><i></i></div>
       <div class="bust" data-shape="base">${SHAPES.map((sh) => `<img class="${sh}" src="${portrait(s.key, sh)}" alt="" draggable="false">`).join("")}</div>
     </div>`).join("");
@@ -179,7 +183,7 @@ function renderSeats(keys) {
     <div class="nameplate" id="plate-${s.key}" data-seat="${s.key}">
       <b>${esc(s.short === "Gary V" ? "Gary V" : s.name)}</b>
       <small>${esc(s.pillar)}</small>
-      <div class="meta"><span class="pips" title="Weight on this decision"></span><span class="chip" hidden></span><span class="score" hidden></span></div>
+      <div class="meta"><span class="pips" title="Poids sur cette décision"></span><span class="chip" hidden></span><span class="score" hidden></span></div>
     </div>`).join("");
   layoutStage();
   startBlinking();
@@ -241,13 +245,13 @@ function bindUI() {
   $("#composer").addEventListener("submit", async (e) => {
     e.preventDefault();
     const prompt = $("#prompt").value.trim();
-    if (prompt.length < 10) return toast("Give the council a real decision, at least a sentence.");
+    if (prompt.length < 10) return toast("Donne au conseil une vraie décision, au moins une phrase.");
     const mode = $('input[name="mode"]:checked').value;
     $("#convene").disabled = true;
     const r = await fetch("/api/council", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ prompt, mode }) });
     const j = await r.json();
     $("#convene").disabled = false;
-    if (!r.ok) return toast(j.error || "Could not start the council.");
+    if (!r.ok) return toast(j.error || "Impossible de lancer le conseil.");
     attach(j.id);
   });
   const openFrom = (e) => { const b = e.target.closest("[data-seat]"); if (b) openCard(b.dataset.seat); };
@@ -260,8 +264,8 @@ function bindUI() {
   $("#guideBtn").addEventListener("click", openGuide);
   document.addEventListener("click", async (e) => {
     if (e.target.closest("[data-copy-example]")) {
-      try { await navigator.clipboard.writeText("/roast-room " + EXAMPLE); toast("Copied. Paste it into Claude Code."); }
-      catch { toast("Copy didn't work here. Select the text and copy it."); }
+      try { await navigator.clipboard.writeText("/roast-room " + EXAMPLE); toast("Copié. Colle-le dans Claude Code."); }
+      catch { toast("La copie n'a pas marché ici. Sélectionne le texte et copie-le."); }
     }
     if (e.target.closest("[data-pdf]")) savePdf(e.target.closest("[data-pdf]"));
   });
@@ -315,7 +319,7 @@ const player = {
   reset() { this.epoch++; this.q.length = 0; this.fast = true; this.flushTimers(); this.busy = false; this.fast = false; this.info(); },
   info() {
     const waiting = this.q.filter((e) => e.type === "seat_done").length;
-    $("#queueInfo").textContent = waiting ? `${waiting} lines up next` : "";
+    $("#queueInfo").textContent = waiting ? `${waiting} répliques à suivre` : "";
   },
 };
 
@@ -335,7 +339,7 @@ function reset() {
   $("#playbar").hidden = true;
   $("#newBtn").hidden = true;
   $("#verdictSheet").hidden = true;
-  $("#panelHead").textContent = "Getting started";
+  $("#panelHead").textContent = "Pour commencer";
   $("#feed").innerHTML = GUIDE;
   $$(".vote").forEach((b) => b.remove());
   renderSeats(state.board);
@@ -353,10 +357,10 @@ function begin(id) {
   $("#waiting").hidden = true;
   $("#newBtn").hidden = false;
   $("#playbar").hidden = false;
-  $("#panelHead").textContent = "Key points";
-  $("#feed").innerHTML = '<div class="empty">One line per seat as the council talks. Click a seat to read its full card.</div>';
+  $("#panelHead").textContent = "Points clés";
+  $("#feed").innerHTML = '<div class="empty">Une ligne par siège pendant que le conseil parle. Clique sur un siège pour lire sa fiche complète.</div>';
   $("#stage").classList.add("live");
-  chairSays("The council is taking their seats", { dots: true });
+  chairSays("Le conseil prend place", { dots: true });
 }
 
 function attach(id) {
@@ -368,7 +372,7 @@ function attach(id) {
     if (ev.type === "end") { es.close(); refreshUsage(); return; }
     if (ev.type === "delta") return; // seats speak from their finished cards
     if (ev.type === "usage") return refreshUsage();
-    if (ev.type === "seat_error") return toast(`${state.byKey[ev.seat].short} hit an error: ${ev.error}`);
+    if (ev.type === "seat_error") return toast(`${state.byKey[ev.seat].short} a rencontré une erreur : ${ev.error}`);
     player.push(ev);
   };
   es.onerror = () => { /* the browser retries; the server replays from the start */ };
@@ -392,10 +396,11 @@ async function handle(ev) {
     case "phase": {
       state.wait = { phase: ev.phase, at: ev.at || Date.now() };
       setStep(STEP_OF[ev.phase] || "setup");
-      feedPhase(ev.label);
+      const phaseLabel = PHASE_FR[ev.phase] || ev.label;
+      feedPhase(phaseLabel);
       const thinking = ["setup", "cruxes", "draft", "verdict"].includes(ev.phase);
       if (thinking || ev.phase === "skip3") {
-        chairSays(ev.label.replace(/^The Chair is /, "").replace(/^./, (c) => c.toUpperCase()), { dots: thinking });
+        chairSays(phaseLabel, { dots: thinking });
         await player.sleep(1400);
       }
       break;
@@ -408,7 +413,7 @@ async function handle(ev) {
     case "cruxes": await onCruxes(ev); break;
     case "draft": await onDraft(ev.draft); break;
     case "verdict": state.wait = null; onVerdict(ev); break;
-    case "error": state.wait = null; toast(`The council stopped: ${ev.error}`); chairSays(`The council stopped: ${ev.error}`); break;
+    case "error": state.wait = null; toast(`Le conseil s'est arrêté : ${ev.error}`); chairSays(`Le conseil s'est arrêté : ${ev.error}`); break;
   }
 }
 
@@ -433,7 +438,7 @@ async function onSetup(ev) {
     const w = ev.weights[s.key]?.weight || 1;
     pl.title = `Weight ${w} of 3: ${ev.weights[s.key]?.reason || ""}`;
   }
-  chairSays(ev.title, { tag: ev.mode === "quick" ? "Quick council" : "Full council" });
+  chairSays(ev.title, { tag: ev.mode === "quick" ? "Conseil rapide" : "Conseil complet" });
 }
 
 function updateOptions(scores) {
@@ -452,7 +457,7 @@ function onRoundStart(round) {
   state.links = [];
   drawLinks();
   $("#cruxes").hidden = true;
-  chairSays(`${["", "Round 1: opening positions", "Round 2: the debate", "Round 3: the vote"][round]}`, { dots: true, tag: "The floor is open" });
+  chairSays(`${["", "Round 1 : positions d'ouverture", "Round 2 : le débat", "Round 3 : le vote"][round]}`, { dots: true, tag: "La parole est ouverte" });
 }
 
 // ------------------------------------------------------------- talking
@@ -512,7 +517,7 @@ function captionFor(who) {
   const s = state.byKey[who];
   $("#capAv").className = `cap-av${s ? "" : " chair"}`;
   $("#capAv").innerHTML = `${s ? `<img src="${portrait(who)}" alt="">` : "<b>RR</b>"}`;
-  $("#capWho").textContent = s ? s.name : "The Chair";
+  $("#capWho").textContent = s ? s.name : "Le Président";
 }
 
 function chairSays(text, { dots = false, tag = "" } = {}) {
@@ -574,24 +579,24 @@ async function onSeatDone(ev) {
   const line = lineFor(round, parsed);
   let tag = ROUND_NAME[round], sub = "", target = null;
   if (round === 1) {
-    tag = `${stanceWord(parsed.stance)}${top ? ` · backs ${top.id} (${top.v}/10)` : ""}`;
+    tag = `${stanceWord(parsed.stance)}${top ? ` · soutient ${top.id} (${top.v}/10)` : ""}`;
   } else if (round === 2) {
     const tgt = parsed.disagreeWith ? state.byKey[parsed.disagreeWith] : null;
     if (tgt) {
       target = tgt.key;
-      tag = `Pushes back on ${tgt.short}`;
+      tag = `Contredit ${tgt.short}`;
       state.links = state.links.filter((l) => l.from !== seat);
       state.links.push({ from: seat, to: tgt.key });
       drawLinks();
     }
-    sub = /^yes/i.test(parsed.moved) ? "Changed position" : "";
+    sub = /^yes/i.test(parsed.moved) ? "A changé de position" : "";
   } else {
     const v = parsed.vote || "endorse";
-    tag = `Votes ${v}`;
+    tag = `Vote : ${VOTE_FR[v] || v}`;
 
   }
   feedCard(round, seat, parsed);
-  await speak(seat, line || "I'll put it in my card.", { tag, target, sub });
+  await speak(seat, line || "Je le mets dans ma fiche.", { tag, target, sub });
 
   const pl = $(`#plate-${seat}`);
   const chip = $(".chip", pl);
@@ -599,24 +604,24 @@ async function onSeatDone(ev) {
   chip.className = "chip";
   if (round === 3) {
     const v = parsed.vote || "endorse";
-    chip.textContent = v;
+    chip.textContent = VOTE_FR[v] || v;
     chip.classList.add(v);
     $(`#seat-${seat} .vote`)?.remove();
     const stamp = document.createElement("div");
     stamp.className = `vote ${v}`;
-    stamp.textContent = v.toUpperCase();
+    stamp.textContent = (VOTE_FR[v] || v).toUpperCase();
     $(`#seat-${seat}`).appendChild(stamp);
   } else chip.textContent = stanceWord(parsed.stance);
-  if (top) { const sc = $(".score", pl); sc.hidden = false; sc.textContent = `${top.id} ${top.v}`; sc.title = `Highest score: option ${top.id}`; }
+  if (top) { const sc = $(".score", pl); sc.hidden = false; sc.textContent = `${top.id} ${top.v}`; sc.title = `Meilleur score : option ${top.id}`; }
   setSpeaker(null);
   void s;
 }
 
 function stanceWord(t = "") {
   const m = t.match(/strong yes|conditional yes|strong no|yes|no/i);
-  if (!m) return "Spoke";
+  if (!m) return "A parlé";
   const w = m[0].toLowerCase();
-  return w === "conditional yes" ? "Yes, if" : w[0].toUpperCase() + w.slice(1);
+  return { "strong yes": "Oui franc", "conditional yes": "Oui, si", "strong no": "Non franc", yes: "Oui", no: "Non" }[w];
 }
 
 function topOption(scores = {}) {
@@ -631,20 +636,20 @@ async function onCruxes(ev) {
   $("#caption").hidden = true;
   const c = $("#cruxes");
   c.hidden = false;
-  c.innerHTML = `<div class="head">${ev.unanimous ? "Too much agreement. The Chair pushes back." : "What they're fighting about"}</div>` +
+  c.innerHTML = `<div class="head">${ev.unanimous ? "Trop d'accord. Le Président pousse à la contradiction." : "Ce sur quoi ils s'opposent"}</div>` +
     ev.cruxes.map((x, i) => `<div class="crux" style="animation-delay:${i * 0.18}s"><b>${esc(x.question)}</b><div class="sides">${x.sides.map((sd) => `<span class="side"><span class="faces">${sd.seats.filter((k) => state.byKey[k]).map(face).join("")}</span>${esc(shorten(sd.position, 48))}</span>`).join("")}</div></div>`).join("");
   const f = document.createElement("div");
   f.className = "feed-note";
-  f.innerHTML = `<b>The fight:</b> ${ev.cruxes.map((x) => esc(x.question)).join(" ")}`;
+  f.innerHTML = `<b>Le désaccord :</b> ${ev.cruxes.map((x) => esc(x.question)).join(" ")}`;
   feedAppend(f);
   await player.sleep(3500 + 1800 * ev.cruxes.length);
 }
 
 async function onDraft(d) {
-  chairSays(`Proposal: ${d.label} on option ${d.option}. ${firstSentences(clean(d.recommendation), 140)}`, { tag: "Up for a vote" });
+  chairSays(`Proposition : ${d.label} sur l'option ${d.option}. ${firstSentences(clean(d.recommendation), 140)}`, { tag: "Soumis au vote" });
   const f = document.createElement("div");
   f.className = "feed-note";
-  f.innerHTML = `<b>Up for a vote:</b> ${esc(d.label)} on option ${esc(d.option)}.`;
+  f.innerHTML = `<b>Soumis au vote :</b> ${esc(d.label)} sur l'option ${esc(d.option)}.`;
   feedAppend(f);
   await player.sleep(4200);
 }
@@ -688,7 +693,7 @@ function feedCard(round, seat, parsed) {
   d.dataset.round = round;
   const top = topOption(parsed.optionScores);
   const tgt = parsed.disagreeWith ? state.byKey[parsed.disagreeWith]?.short : "";
-  const what = round === 1 ? `${stanceWord(parsed.stance)}${top ? `, backs ${top.id}` : ""}` : round === 2 ? (tgt ? `vs ${tgt}` : "Debate") : `Votes ${parsed.vote || "endorse"}`;
+  const what = round === 1 ? `${stanceWord(parsed.stance)}${top ? `, soutient ${top.id}` : ""}` : round === 2 ? (tgt ? `contre ${tgt}` : "Débat") : `Vote : ${VOTE_FR[parsed.vote || "endorse"] || parsed.vote}`;
   d.innerHTML = `<img class="av" src="${portrait(seat)}" alt=""><div><div class="h">${esc(s.short)}<span class="r">${esc(what)}</span></div><p>${esc(lineFor(round, parsed, 105))}</p></div>`;
   feedAppend(d);
 }
@@ -699,10 +704,10 @@ function openCard(seat, round) {
   const r = round || rounds[0];
   const c = state.cards[r]?.[seat];
   $("#cardBody").innerHTML = `
-    <div class="card-head"><img src="${portrait(seat)}" alt=""><div><div class="label">${esc(s.pillar)}</div><h3>${esc(s.name)}</h3><p class="muted" style="margin:0">Owns the question: ${esc(s.question)}</p></div></div>
+    <div class="card-head"><img src="${portrait(seat)}" alt=""><div><div class="label">${esc(s.pillar)}</div><h3>${esc(s.name)}</h3><p class="muted" style="margin:0">Porte la question : ${esc(s.question)}</p></div></div>
     ${rounds.length > 1 ? `<p style="margin:0 0 6px">${rounds.slice().reverse().map((x) => `<button class="ghost" data-r="${x}" style="margin-right:6px">${ROUND_NAME[x]}</button>`).join("")}</p>` : ""}
-    ${c ? `<pre>${esc(c.text)}</pre>${c.quotes.length ? `<ul class="qcheck">${c.quotes.map((q) => `<li class="${q.verified ? "" : "bad"}">"${esc(shorten(q.quote, 110))}" (${q.source}) ${q.verified ? "verified in the brain" : "not found in the brain"}</li>`).join("")}</ul>` : ""}` : `<p class="muted">This seat has not spoken yet.</p>`}
-    <p class="muted" style="font-size:12px">A simulated advisor built from ${esc(s.name)}'s public work. Not the person.</p>`;
+    ${c ? `<pre>${esc(c.text)}</pre>${c.quotes.length ? `<ul class="qcheck">${c.quotes.map((q) => `<li class="${q.verified ? "" : "bad"}">"${esc(shorten(q.quote, 110))}" (${q.source}) ${q.verified ? "vérifiée dans la base" : "introuvable dans la base"}</li>`).join("")}</ul>` : ""}` : `<p class="muted">Ce siège n'a pas encore parlé.</p>`}
+    <p class="muted" style="font-size:12px">Un conseiller simulé construit à partir du travail public de ${esc(s.name)}. Pas la vraie personne.</p>`;
   $$("#cardBody [data-r]").forEach((b) => b.addEventListener("click", () => openCard(seat, Number(b.dataset.r))));
   const dlg = $("#cardDialog");
   if (!dlg.open) dlg.showModal();
@@ -732,8 +737,8 @@ function onVerdict(ev) {
   const short = (t, n) => esc(shorten(clean(t || ""), n));
   const html = `
     <div class="v-top">
-      <div><div class="label">The council's verdict</div><span class="v-label ${labelClass(v.label)}">${esc(v.label)}</span></div>
-      <div class="actions"><button class="pill" type="button" data-pdf>Download PDF</button><button class="ghost" data-close>Back to the table</button></div>
+      <div><div class="label">Le verdict du conseil</div><span class="v-label ${labelClass(v.label)}">${esc(lbl(v.label))}</span></div>
+      <div class="actions"><button class="pill" type="button" data-pdf>Télécharger le PDF</button><button class="ghost" data-close>Retour à la table</button></div>
     </div>
     <p class="v-call">${esc(v.call)}</p>
     <div class="v-grid">
@@ -741,36 +746,36 @@ function onVerdict(ev) {
         <div class="opt ${o.id === v.recommended ? "lead" : ""}"><span class="id">${o.id}</span><span class="label">${esc(o.label)}</span><span class="val">${v.scores[o.id]?.score ?? "-"}</span><span class="bar"><i style="width:${(v.scores[o.id]?.score || 0) * 10}%"></i></span></div>`).join("")}</div>
         <p class="v-meta">Confidence ${v.confidence ?? "-"}/10${v.votes ? ` · ${v.votes.endorse || 0} endorse, ${v.votes.amend || 0} amend, ${v.votes.dissent || 0} dissent` : ""}</p>
       </div>
-      <div class="v-sec"><h3>Why</h3><ul class="v-why">${v.why.slice(0, 3).map((w) => { const k = seatKey(w.seat); return `<li>${k ? `<img class="av" src="${portrait(k)}" alt="">` : ""}<span>${short(w.point, 150)}</span></li>`; }).join("")}</ul></div>
-      <div class="v-sec"><h3>Watch out</h3><div class="minority"><div class="who">${mk ? `<img class="av" src="${portrait(mk)}" alt="">` : ""}${esc(seatName(v.minority.seat))}</div><q>${short(v.minority.quote, 170)}</q></div></div>
-      <div class="v-sec"><h3>Next steps</h3><ul class="v-steps">${v.next_steps.slice(0, 3).map((n) => `<li><b>${esc(n.when)}</b> ${short(n.action, 120)}</li>`).join("")}</ul>
-        <p class="v-meta"><b>Kill it if:</b> ${short(v.kill_criteria, 140)}</p></div>
+      <div class="v-sec"><h3>Pourquoi</h3><ul class="v-why">${v.why.slice(0, 3).map((w) => { const k = seatKey(w.seat); return `<li>${k ? `<img class="av" src="${portrait(k)}" alt="">` : ""}<span>${short(w.point, 150)}</span></li>`; }).join("")}</ul></div>
+      <div class="v-sec"><h3>Attention</h3><div class="minority"><div class="who">${mk ? `<img class="av" src="${portrait(mk)}" alt="">` : ""}${esc(seatName(v.minority.seat))}</div><q>${short(v.minority.quote, 170)}</q></div></div>
+      <div class="v-sec"><h3>Prochaines étapes</h3><ul class="v-steps">${v.next_steps.slice(0, 3).map((n) => `<li><b>${esc(n.when)}</b> ${short(n.action, 120)}</li>`).join("")}</ul>
+        <p class="v-meta"><b>Arrête si :</b> ${short(v.kill_criteria, 140)}</p></div>
     </div>
-    <details class="v-more"><summary>Full detail</summary>
+    <details class="v-more"><summary>Détail complet</summary>
       <div class="v-grid">
-        <div class="v-sec"><h3>Where they fought</h3><ul>${v.fights.map((f) => `<li><b>${esc(f.crux)}</b> ${esc(f.story)}</li>`).join("")}</ul></div>
+        <div class="v-sec"><h3>Où ils se sont opposés</h3><ul>${v.fights.map((f) => `<li><b>${esc(f.crux)}</b> ${esc(f.story)}</li>`).join("")}</ul></div>
         <div class="v-sec"><h3>Conditions</h3><ol>${v.conditions.map((c) => `<li>${esc(c)}</li>`).join("")}</ol></div>
-        <div class="v-sec v-wide"><h3>Scorecard</h3>
-          <table class="scorecard"><thead><tr><th>Seat</th><th>Weight</th>${state.options.map((o) => `<th>${o.id}</th>`).join("")}<th>Their line</th></tr></thead><tbody>
+        <div class="v-sec v-wide"><h3>Tableau des scores</h3>
+          <table class="scorecard"><thead><tr><th>Siège</th><th>Poids</th>${state.options.map((o) => `<th>${o.id}</th>`).join("")}<th>Leur ligne</th></tr></thead><tbody>
           ${seats.map((x) => { const s = state.byKey[x.key]; return `<tr><td><span class="who"><img class="av" src="${portrait(x.key)}" alt="">${esc(s.short)}</span></td><td class="n">${x.weight}</td>${state.options.map((o) => `<td class="n">${x.optionScores?.[o.id] ?? "-"}</td>`).join("")}<td class="line">${short(x.oneLine, 150)}</td></tr>`; }).join("")}
           </tbody></table>
-          <p class="muted" style="font-size:11.5px;margin-top:8px">Weighted by how much each pillar matters here. ${state.options.map((o) => `${o.id}: ${esc(v.scores[o.id]?.math || "")}`).join(" · ")}</p></div>
-        <div class="v-sec"><h3>Cheapest test</h3><p>${esc(v.cheapest_test)}</p><h3>Revisit</h3><p>${esc(v.revisit)}</p></div>
-        <div class="v-sec"><h3>The strongest objection in full</h3><p>${esc(v.minority.quote)}</p><p class="muted">For this to be right: ${esc(v.minority.would_have_to_be_true)}</p></div>
-        ${v.amendments?.length ? `<div class="v-sec v-wide"><h3>Amendments</h3><ul>${v.amendments.map((a) => `<li><b>${esc(seatName(a.seat))}:</b> ${esc(a.amendment)} <span class="tag">${a.adopted ? "Adopted" : "Not adopted"}: ${esc(a.reason)}</span></li>`).join("")}</ul></div>` : ""}
+          <p class="muted" style="font-size:11.5px;margin-top:8px">Pondéré selon l'importance de chaque pilier ici. ${state.options.map((o) => `${o.id}: ${esc(v.scores[o.id]?.math || "")}`).join(" · ")}</p></div>
+        <div class="v-sec"><h3>Test le moins cher</h3><p>${esc(v.cheapest_test)}</p><h3>À réexaminer</h3><p>${esc(v.revisit)}</p></div>
+        <div class="v-sec"><h3>L'objection la plus forte, en entier</h3><p>${esc(v.minority.quote)}</p><p class="muted">Pour que ce soit juste : ${esc(v.minority.would_have_to_be_true)}</p></div>
+        ${v.amendments?.length ? `<div class="v-sec v-wide"><h3>Amendements</h3><ul>${v.amendments.map((a) => `<li><b>${esc(seatName(a.seat))}:</b> ${esc(a.amendment)} <span class="tag">${a.adopted ? "Adopté" : "Non adopté"}: ${esc(a.reason)}</span></li>`).join("")}</ul></div>` : ""}
       </div>
     </details>
-    <div class="v-foot"><span class="muted">${esc(v.disclaimer)}</span><button class="ghost" data-close>Back to the table</button></div>`;
+    <div class="v-foot"><span class="muted">${esc(v.disclaimer)}</span><button class="ghost" data-close>Retour à la table</button></div>`;
   $("#verdictBody").innerHTML = html;
   const plate = $("#plate");
   plate.hidden = false;
-  plate.innerHTML = `<div class="label">The council's verdict</div><span class="v-label ${labelClass(v.label)}">${esc(v.label)}</span><p>${esc(firstSentences(clean(v.call), 150))}</p><div class="row"><button type="button" id="plateOpen">Read the verdict</button><button type="button" data-pdf>Download PDF</button><button type="button" class="alt" id="plateReplay">Replay this council</button></div>`;
+  plate.innerHTML = `<div class="label">Le verdict du conseil</div><span class="v-label ${labelClass(v.label)}">${esc(lbl(v.label))}</span><p>${esc(firstSentences(clean(v.call), 150))}</p><div class="row"><button type="button" id="plateOpen">Lire le verdict</button><button type="button" data-pdf>Télécharger le PDF</button><button type="button" class="alt" id="plateReplay">Rejouer ce conseil</button></div>`;
   $("#plateOpen").addEventListener("click", () => ($("#verdictSheet").hidden = false));
   $("#plateReplay").addEventListener("click", () => replay(state.session));
   $("#playbar").hidden = true;
   const f = document.createElement("div");
   f.className = "feed-note";
-  f.innerHTML = `<b>Verdict: ${esc(v.label)}.</b> ${esc(firstSentences(clean(v.call), 160))}`;
+  f.innerHTML = `<b>Verdict : ${esc(lbl(v.label))}.</b> ${esc(firstSentences(clean(v.call), 160))}`;
   feedAppend(f);
   setTimeout(() => { if (state.verdict === ev) $("#verdictSheet").hidden = false; }, 1600);
 }
@@ -779,8 +784,8 @@ function onVerdict(ev) {
 async function openHistory() {
   const { sessions } = await fetch("/api/sessions").then((x) => x.json());
   $("#historyList").innerHTML = sessions.length
-    ? sessions.map((s) => `<li><button data-id="${esc(s.id)}"><b>${esc(s.title)}</b><small>${esc(s.id.slice(0, 10))} · ${esc(s.mode)} · ${esc(s.status)}</small></button>${s.status === "done" ? `<button class="pdf" type="button" data-pdf="${esc(s.id)}" title="Download the verdict as a PDF">PDF</button>` : ""}</li>`).join("")
-    : '<li class="muted">No sessions yet. Convene the council once and it shows up here.</li>';
+    ? sessions.map((s) => `<li><button data-id="${esc(s.id)}"><b>${esc(s.title)}</b><small>${esc(s.id.slice(0, 10))} · ${esc(s.mode)} · ${esc(s.status)}</small></button>${s.status === "done" ? `<button class="pdf" type="button" data-pdf="${esc(s.id)}" title="Télécharger le verdict en PDF">PDF</button>` : ""}</li>`).join("")
+    : '<li class="muted">Aucune session pour l\'instant. Convoque le conseil une fois et elle apparaîtra ici.</li>';
   $$("#historyList button[data-id]").forEach((b) => b.addEventListener("click", () => { $("#historyDialog").close(); replay(b.dataset.id); }));
   $("#historyDialog").showModal();
 }
@@ -798,19 +803,19 @@ async function replay(id) {
 // ------------------------------------------------------------- waiting on Claude Code
 // A live council goes quiet for minutes while the seats write in parallel. Instead of a
 // frozen table, say what is happening, how long it has been, and what each seat is weighing.
-const SAME_TIME = "The advisors all write at the same time in Claude Code. Their lines play here as soon as the round is in.";
+const SAME_TIME = "Les conseillers écrivent tous en même temps dans Claude Code. Leurs répliques passent ici dès que le round est rendu.";
 function waitCopy(phase) {
   const n = state.setup?.mode === "quick" ? 2 : 3;
   return {
-    setup: ["Setting the table", "The Chair is seating the council.", ""],
-    round1: ["Round 1 of " + n, "The advisors are writing their opening positions.", SAME_TIME],
-    round2: ["Round 2 of " + n, "The advisors are reading each other's openings and firing back.", SAME_TIME],
-    round3: ["Round 3 of " + n, "The advisors are voting on the Chair's proposal.", SAME_TIME],
-    cruxes: ["Between rounds", "The Chair is reading the openings and finding where they disagree.", "The fight shows up here next, then the debate starts."],
-    draft: ["Between rounds", "The Chair is turning the debate into a proposal for the vote.", "Next, every advisor votes on it."],
-    skip3: ["Last step", "The Chair is scoring the room and writing the verdict.", "When it lands, you can download it as a PDF."],
-    verdict: ["Last step", "The Chair is scoring the room and writing the verdict.", "When it lands, you can download it as a PDF."],
-  }[phase] || ["Working", "The council is working.", ""];
+    setup: ["Mise en place", "Le Président installe le conseil.", ""],
+    round1: ["Round 1 sur " + n, "Les conseillers rédigent leur position d'ouverture.", SAME_TIME],
+    round2: ["Round 2 sur " + n, "Les conseillers lisent les ouvertures des autres et ripostent.", SAME_TIME],
+    round3: ["Round 3 sur " + n, "Les conseillers votent la proposition du Président.", SAME_TIME],
+    cruxes: ["Entre deux rounds", "Le Président lit les ouvertures et cherche où ils divergent.", "Le désaccord s'affiche ici, puis le débat commence."],
+    draft: ["Entre deux rounds", "Le Président transforme le débat en proposition pour le vote.", "Ensuite, chaque conseiller vote."],
+    skip3: ["Dernière étape", "Le Président note la salle et rédige le verdict.", "Quand il arrive, tu peux le télécharger en PDF."],
+    verdict: ["Dernière étape", "Le Président note la salle et rédige le verdict.", "Quand il arrive, tu peux le télécharger en PDF."],
+  }[phase] || ["En cours", "Le conseil travaille.", ""];
 }
 const clock = (ms) => { const s = Math.max(0, Math.round(ms / 1000)); return Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0"); };
 
@@ -861,7 +866,7 @@ function tickWait() {
       const s = state.byKey[pending[state.museIdx]];
       muse.classList.add("fade");
       setTimeout(() => {
-        muse.innerHTML = "<b>" + esc(s.short) + "</b> is weighing: " + esc(s.question.replace(/^./, (c) => c.toLowerCase())) + (done ? " · " + done + " of " + seats.length + " in" : "");
+        muse.innerHTML = "<b>" + esc(s.short) + "</b> pèse : " + esc(s.question.replace(/^./, (c) => c.toLowerCase())) + (done ? " · " + done + " sur " + seats.length + " rendus" : "");
         muse.classList.remove("fade");
         $$(".seat").forEach((el) => el.classList.toggle("musing", el.dataset.seat === s.key));
       }, 300);
@@ -885,7 +890,7 @@ async function savePdf(btn) {
   const id = btn.dataset.pdf;
   btn.disabled = true;
   const old = btn.textContent;
-  btn.textContent = "Making PDF...";
+  btn.textContent = "Création du PDF...";
   try {
     let setup = state.setup, verdict = state.verdict;
     if (id) { // a past session from the history list
@@ -893,11 +898,11 @@ async function savePdf(btn) {
       setup = j.events.find((e) => e.type === "setup");
       verdict = [...j.events].reverse().find((e) => e.type === "verdict");
     }
-    if (!setup || !verdict) throw new Error("This council has no verdict yet.");
+    if (!setup || !verdict) throw new Error("Ce conseil n'a pas encore de verdict.");
     await downloadVerdictPdf({ setup, verdict, byKey: state.byKey, id: id || state.session });
   } catch (e) {
     console.error(e);
-    toast("Couldn't make the PDF: " + (e.message || e));
+    toast("Impossible de créer le PDF : " + (e.message || e));
   } finally {
     btn.disabled = false;
     btn.textContent = old;
